@@ -24,22 +24,24 @@ class Ball:
         self.hit = 0
         self.id = canvas.create_oval(10, 10, 25, 25, fill=color, width=1)
         self.canvas.move(self.id, 230, 461)
-        start = [3, 2.8, 2.6, 2.4, 2.2, 2, 1.8, 1.6]
+        start = [4, 3.8, 3.6, 3.4, 3.2, 3, 2.8, 2.6]
         random.shuffle(start)
+        #print(start)
         self.x = start[0]
         self.y = -start[0]
         self.canvas.move(self.id, self.x, self.y)
-        self.canvas_height = self.canvas.winfo_height()
-        self.canvas_width = self.canvas.winfo_width()
+        self.canvas_height = canvas.winfo_height()
+        self.canvas_width = canvas.winfo_width()
 
     def brick_hit(self, pos):
         for brick_line in self.bricks:
             for brick in brick_line:
                 brick_pos = self.canvas.coords(brick.id)
-                # print(brick_pos)
+                #print(brick_pos)
                 try:
                     if pos[2] >= brick_pos[0] and pos[0] <= brick_pos[2]:
                         if pos[3] >= brick_pos[1] and pos[1] <= brick_pos[3]:
+                            canvas.bell()
                             self.hit += 1
                             self.score.configure(text="Score: " + str(self.hit))
                             self.canvas.delete(brick.id)
@@ -47,20 +49,21 @@ class Ball:
                 except:
                     continue
         return False
-
+    
+        
     def paddle_hit(self, pos):
         paddle_pos = self.canvas.coords(self.paddle.id)
         if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
             if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
-                # print("paddle hit")
+                #print("paddle hit")
                 return True
             return False
 
     def draw(self):
         self.canvas.move(self.id, self.x, self.y)
         pos = self.canvas.coords(self.id)
-        # print(pos)
-        start = [3, 2.8, 2.6, 2.4, 2.2, 2, 1.8, 1.6]
+        #print(pos)
+        start = [4, 3.8, 3.6, 3.4, 3.2, 3, 2.8, 2.6]
         random.shuffle(start)
         if self.brick_hit(pos):
             self.y = start[0]
@@ -75,20 +78,23 @@ class Ball:
         if self.paddle_hit(pos):
             self.y = -start[0]
 
-
+        
 class Paddle:
     def __init__(self, canvas, color):
         self.canvas = canvas
-        self.id = self.canvas.create_rectangle(0, 0, 100, 10, fill=color)
+        self.id = canvas.create_rectangle(0, 0, 100, 10, fill=color)
         self.canvas.move(self.id, 200, 485)
         self.x = 0
-        self.canvas_width = self.canvas.winfo_width()
+        self.pausec=0
+        self.canvas_width = canvas.winfo_width()
         self.canvas.bind_all("<Left>", self.turn_left)
         self.canvas.bind_all("<Right>", self.turn_right)
+        self.canvas.bind_all("<space>", self.pauser)
+        
 
     def draw(self):
         pos = self.canvas.coords(self.id)
-        # print(pos)
+        #print(pos)
         if pos[0] + self.x <= 0:
             self.x = 0
         if pos[2] + self.x >= self.canvas_width:
@@ -96,15 +102,21 @@ class Paddle:
         self.canvas.move(self.id, self.x, 0)
 
     def turn_left(self, event):
-        self.x = -3
+        self.x = -3.5
 
     def turn_right(self, event):
-        self.x = 3
+        self.x = 3.5
+
+    def pauser(self,event):
+        self.pausec+=1
+        if self.pausec==2:
+            self.pausec=0
+    
 
 class Bricks:
     def __init__(self, canvas, color):
         self.canvas = canvas
-        self.id = self.canvas.create_oval(5, 5, 25, 25, fill=color, width=2)
+        self.id = canvas.create_oval(5, 5, 25, 25, fill=color, width=2)
 
 
 playing = False
@@ -141,20 +153,40 @@ def start_game(event):
 
         time.sleep(1)
         while 1:
-            if not ball.bottom_hit:
-                ball.draw()
-                paddle.draw()
-                root.update_idletasks()
-                root.update()
-                time.sleep(0.01)
+            if paddle.pausec !=1:
+                try:
+                    canvas.delete(m)
+                    del m
+                except:
+                    pass
+                if not ball.bottom_hit:
+                    ball.draw()
+                    paddle.draw()
+                    root.update_idletasks()
+                    root.update()
+                    time.sleep(0.01)
+                    if ball.hit==95:
+                        canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font="Consolas 24 ")
+                        root.update_idletasks()
+                        root.update()
+                        playing = False
+                        break
+                else:
+                    canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font="Consolas 24 ")
+                    root.update_idletasks()
+                    root.update()
+                    playing = False
+                    break
             else:
-                canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font="Consolas 24 ")
+                try:
+                    if m==None:pass
+                except:
+                    m=canvas.create_text(250, 250, text="PAUSE!!", fill="green", font="Consolas 24 ")
                 root.update_idletasks()
                 root.update()
-                playing = False
-                break
 
 
 root.bind_all("<Return>", start_game)
 canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font="Consolas 18")
+j=canvas.find_all()
 root.mainloop()

@@ -1,12 +1,13 @@
 from tkinter import *
 import time
 import random
+import rankdb
 
 root = Tk()
 root.title("Bounce")
 root.geometry("500x570")
 root.resizable(0, 0)
-root.wm_attributes("-topmost", 1)
+#root.wm_attributes("-topmost", 1)
 canvas = Canvas(root, width=500, height=500, bd=0, highlightthickness=0, highlightbackground="Red", bg="Black")
 canvas.pack(padx=10, pady=10)
 score = Label(height=50, width=80, text="Score: 00", font="Consolas 14 bold")
@@ -184,7 +185,7 @@ def start_game(event):
                     m=canvas.create_text(250, 250, text="PAUSE!!", fill="green", font="Consolas 24 ")
                 root.update_idletasks()
                 root.update()
-
+        rankdb.rank(ball.hit)
 
 root.bind_all("<Return>", start_game)
 canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font="Consolas 18")

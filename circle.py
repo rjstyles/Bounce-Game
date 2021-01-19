@@ -56,16 +56,6 @@ class Circle:
         if rect.left <= sx and sx <= rect.right and rect.top <= sy and sy <= rect.bottom:
             success = True
         
-        if success == True:
-            rectMidX = rect.left + (rect.right - rect.left) / 2
-            rectMidY = rect.top + (rect.bottom - rect.top) / 2
-            distY = abs(rectMidY - self.y)
-            distX = abs(rectMidX - self.x)
-            if distX > distY:
-                self.xSpeed = -self.xSpeed
-            else :
-                self.ySpeed = -self.ySpeed
-        
         return success
 
     def setSpeed(self, ySpeed, xSpeed): # 스피드 설정
@@ -74,6 +64,7 @@ class Circle:
     def moveTo(self, y, x): # 지정 위치로 이동
         self.y = y
         self.x = x
-    def update(self):
+    def update(self, id, canvas):
         self.y += self.ySpeed
         self.x += self.xSpeed
+        canvas.move(id, self.xSpeed, self.ySpeed)

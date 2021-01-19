@@ -38,13 +38,9 @@ def start_game(event):
             b = []
             for j in range(0, 19):
                 random.shuffle(BRICK_COLOR)
-                tmp = Bricks(canvas, BRICK_COLOR[0])
+                tmp = Bricks(canvas, BRICK_COLOR[0], 25 * i + 15, 25 * j + 15)
                 b.append(tmp)
             bricks.append(b)
-
-        for i in range(0, 5):
-            for j in range(0, 19):
-                canvas.move(bricks[i][j].id, 25 * j, 25 * i)
 
         ball = Ball(canvas, BALL_COLOR[0], paddle, bricks, score)
         root.update_idletasks()

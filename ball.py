@@ -19,7 +19,7 @@ class Ball:
         self.canvas_height = canvas.winfo_height()
         self.canvas_width = canvas.winfo_width()
 
-    def checkBrickCollision(self, pos):
+    def brick_hit(self, pos):
         for brick_line in self.bricks:
             for brick in brick_line:
                 brick_pos = self.canvas.coords(brick.id)
@@ -27,7 +27,9 @@ class Ball:
                 try:
                     if pos[2] >= brick_pos[0] and pos[0] <= brick_pos[2]:
                         if pos[3] >= brick_pos[1] and pos[1] <= brick_pos[3]:
-                            canvas.bell()
+                            ## 이곳에 블럭 충돌시 발생하는 이벤트 삽입
+
+
                             self.hit += 1
                             self.score.configure(text="Score: " + str(self.hit))
                             self.canvas.delete(brick.id)
@@ -41,7 +43,7 @@ class Ball:
         paddle_pos = self.canvas.coords(self.paddle.id)
         if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
             if pos[3] >= paddle_pos[1] and pos[1] <= paddle_pos[3]:
-                #print("paddle hit")
+                print("paddle hit")
                 return True
             return False
 
@@ -51,7 +53,7 @@ class Ball:
         #print(pos)
         start = [4, 3.8, 3.6, 3.4, 3.2, 3, 2.8, 2.6]
         random.shuffle(start)
-        if self.checkBrickCollision(pos):
+        if self.brick_hit(pos):
             self.y = start[0]
         if pos[1] <= 0:
             self.y = start[0]

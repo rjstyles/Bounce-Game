@@ -1,6 +1,7 @@
 from tkinter import *
 import time
 import random
+import rankdb
 from ball import Ball
 from bricks import Bricks
 from circle import Circle

@@ -17,12 +17,12 @@ canvas.pack(padx=10, pady=10)
 score = Label(height=50, width=80, text="Score: 00", font="Consolas 14 bold")
 score.pack(side="left")
 root.update()
-
 playing = False
-
+breakCount = 0
 
 def start_game(event):
     global playing
+    global breakCount
     if playing is False:
         playing = True
         score.configure(text="Score: 00")
@@ -38,15 +38,20 @@ def start_game(event):
             b = []
             for j in range(0, 19):
                 random.shuffle(BRICK_COLOR)
-                tmp = Bricks(canvas, BRICK_COLOR[0])
+                tmp = Bricks(canvas, BRICK_COLOR[0], 25 * i + 15, 25 * j + 15)
                 b.append(tmp)
             bricks.append(b)
 
-        for i in range(0, 5):
-            for j in range(0, 19):
-                canvas.move(bricks[i][j].id, 25 * j, 25 * i)
+        balls = [Ball(canvas, BALL_COLOR[0], paddle, bricks, score)]
 
-        ball = Ball(canvas, BALL_COLOR[0], paddle, bricks, score)
+        #ball = Ball(canvas, BALL_COLOR[1], paddle, bricks, score)
+        #ball.collider.setSpeed(-3.2, -4)
+        #balls.append(ball)
+        
+        #ball = Ball(canvas, BALL_COLOR[2], paddle, bricks, score)
+        #ball.collider.setSpeed(-3.6, -3)
+        #balls.append(ball)
+        
         root.update_idletasks()
         root.update()
 
@@ -58,18 +63,24 @@ def start_game(event):
                     del m
                 except:
                     pass
-                if not ball.bottom_hit:
-                    ball.draw()
-                    paddle.draw()
-                    root.update_idletasks()
-                    root.update()
-                    time.sleep(0.01)
-                    if ball.hit==95:
+                if len(balls) > 0:
+                    for b in balls:
+                        b.update()
+                        breakCount += b.getBreakCount()
+                        b.setBreakCount(0)
+                        if b.bottom_hit == True:
+                            balls.remove(b)
+                    if breakCount==95:
                         canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font="Consolas 24 ")
                         root.update_idletasks()
                         root.update()
                         playing = False
                         break
+                    score.configure(text="Score: " + str(breakCount))
+                    paddle.draw()
+                    root.update_idletasks()
+                    root.update()
+                    time.sleep(0.01)
                 else:
                     canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font="Consolas 24 ")
                     root.update_idletasks()

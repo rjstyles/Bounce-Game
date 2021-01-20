@@ -3,7 +3,7 @@ import item
 import random
 
 class Ball:
-    def __init__(self, canvas, img, paddle, bricks, score, items):
+    def __init__(self, canvas, img, paddle, bricks, score, items, itemImg):
         self.bricks = bricks
         self.canvas = canvas
         self.paddle = paddle
@@ -21,6 +21,7 @@ class Ball:
         self.canvas_height = canvas.winfo_height()
         self.canvas_width = canvas.winfo_width()
         self.items = items
+        self.itemImg = itemImg
 
     def brick_hit(self):
         for brick in self.bricks:
@@ -43,7 +44,7 @@ class Ball:
 
                 # 확률적 아이템 생성
                 if random.randint(0, 1) == 0: # 1/16 확률로 디버그: 100% 확률로
-                    self.items.append(item.Item(0, brick.collider.getMidY(), brick.collider.getMidX(), self.canvas, self.paddle))
+                    self.items.append(item.Item(0, brick.collider.getMidY(), brick.collider.getMidX(), self.canvas, self.itemImg, self.paddle))
 
                 # brick 없애기
                 brick.destroy()
@@ -85,3 +86,9 @@ class Ball:
         return self.breakCount
     def setBreakCount(self, num):
         self.breakCount = num
+    def moveTo(self, y, x):
+        dy = y - self.collider.y
+        dx = x - self.collider.x
+        self.canvas.move(self.id, dx, dy)
+        self.collider.y = y
+        self.collider.x = x

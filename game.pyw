@@ -31,6 +31,10 @@ ballImg = Image.open(resourceManager.mainball)
 ballImg = ballImg.resize((18, 18), Image.ANTIALIAS)
 ballImg = ImageTk.PhotoImage(ballImg)
 
+itemImg = Image.open(resourceManager.itemImg[0])
+itemImg = itemImg.resize((18, 18), Image.ANTIALIAS)
+itemImg = ImageTk.PhotoImage(itemImg)
+
 bgImage = ImageTk.PhotoImage(file=resourceManager.bgImage)
 canvas.create_image(0, 0, image=bgImage, anchor='nw')
 score = Label(height=50, width=80, text="Score: 0", font=resourceManager.font)
@@ -74,7 +78,7 @@ def start_game(event):
         items = []
         
         # 공 생성
-        balls = [Ball(canvas, ballImg, paddle, bricks, score, items)]
+        balls = [Ball(canvas, ballImg, paddle, bricks, score, items, itemImg)]
 
         root.update_idletasks()
         root.update()
@@ -98,7 +102,8 @@ def start_game(event):
                         i.update()
                         if i.isEaten():
                             if i.type == 0:
-                                b = Ball(canvas, ballImg, paddle, bricks, score, items)
+                                b = Ball(canvas, ballImg, paddle, bricks, score, items, itemImg)
+                                b.moveTo(i.collider.y, i.collider.x)
                                 b.collider.setSpeed(random.random() - 4, (random.random() - 0.5) * 7)
                                 balls.append(b)
                             items.remove(i)

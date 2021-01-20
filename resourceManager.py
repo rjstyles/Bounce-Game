@@ -8,7 +8,7 @@ font = "Consolas 14 bold"
 bgMusic = "bk_music.mp3"
 bar="Orchid"
 itemImg = []
-itemImg.append("item_blue")
-itemImg.append("item_green")
-itemImg.append("item_white")
-itemImg.append("item_red")
+itemImg.append("item_blue.png")
+itemImg.append("item_green.png")
+itemImg.append("item_white.png")
+itemImg.append("item_red.png")

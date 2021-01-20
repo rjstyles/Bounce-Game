@@ -2,11 +2,11 @@ from rectangle import Rectangle
 from circle import Circle
 
 class Item:
-    def __init__(self, itemType, y, x, canvas, paddle):
+    def __init__(self, itemType, y, x, canvas, img, paddle):
         self.type = itemType
-        self.collider = Circle(y, x, 10)
+        self.collider = Circle(y, x, 9)
         self.collider.setSpeed(2, 0)
-        self.id = canvas.create_oval(-7, -7, 7, 7, fill="white", width=1) # 나중에 이미지로 교체
+        self.id = canvas.create_image(-9, -9, image=img, anchor='nw')
         self.canvas = canvas
         self.canvas.move(self.id, x, y)
         self.dead = 0

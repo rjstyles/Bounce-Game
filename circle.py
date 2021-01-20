@@ -61,9 +61,6 @@ class Circle:
     def setSpeed(self, ySpeed, xSpeed): # 스피드 설정
         self.ySpeed = ySpeed
         self.xSpeed = xSpeed
-    def moveTo(self, y, x): # 지정 위치로 이동
-        self.y = y
-        self.x = x
     def update(self, id, canvas):
         self.y += self.ySpeed
         self.x += self.xSpeed

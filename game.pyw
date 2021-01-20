@@ -7,6 +7,8 @@ from bricks import Bricks
 from circle import Circle
 from paddle import Paddle
 import stageManager
+import resourceManager
+from PIL import ImageTk
 
 root = Tk()
 root.title("Bounce")
@@ -15,7 +17,9 @@ root.resizable(0, 0)
 #root.wm_attributes("-topmost", 1)
 canvas = Canvas(root, width=500, height=500, bd=0, highlightthickness=0, highlightbackground="Red", bg="Black")
 canvas.pack(padx=10, pady=10)
-score = Label(height=50, width=80, text="Score: 00", font="Consolas 14 bold")
+bgImage = ImageTk.PhotoImage(file=resourceManager.bgImage)
+canvas.create_image(0, 0, image=bgImage, anchor='nw')
+score = Label(height=50, width=80, text="Score: 00", font=resourceManager.font)
 score.pack(side="left")
 root.update()
 playing = False
@@ -30,6 +34,7 @@ def start_game(event):
         playing = True
         score.configure(text="Score: 00")
         canvas.delete("all")
+        canvas.create_image(0, 0, image=bgImage, anchor='nw')
         BALL_COLOR = ["red", "yellow", "white"]
         BRICK_COLOR = ["PeachPuff3", "dark slate gray", "rosy brown", "light goldenrod yellow", "turquoise3", "salmon",
                        "light steel blue", "dark khaki", "pale violet red", "orchid", "tan", "MistyRose2",

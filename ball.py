@@ -21,27 +21,26 @@ class Ball:
         self.canvas_width = canvas.winfo_width()
 
     def brick_hit(self):
-        for brick_line in self.bricks:
-            for brick in brick_line:
-                if self.collider.checkCollisionWithRectangle(brick.collider):
-                    ## 이곳에 블럭 충돌시 발생하는 이벤트 삽입
+        for brick in self.bricks:
+            if self.collider.checkCollisionWithRectangle(brick.collider):
+                ## 이곳에 블럭 충돌시 발생하는 이벤트 삽입
+                
+                # 충돌 위치에 따른 x 또는 y속도 반전
+                rect = brick.collider
+                rectMidX = rect.left + (rect.right - rect.left) / 2
+                rectMidY = rect.top + (rect.bottom - rect.top) / 2
+                distY = abs(rectMidY - self.collider.y)
+                distX = abs(rectMidX - self.collider.x)
+                if distX > distY:
+                    self.collider.xSpeed = -self.collider.xSpeed
+                else :
+                    self.collider.ySpeed = -self.collider.ySpeed
 
-                    # 충돌 위치에 따른 x 또는 y속도 반전
-                    rect = brick.collider
-                    rectMidX = rect.left + (rect.right - rect.left) / 2
-                    rectMidY = rect.top + (rect.bottom - rect.top) / 2
-                    distY = abs(rectMidY - self.collider.y)
-                    distX = abs(rectMidX - self.collider.x)
-                    if distX > distY:
-                        self.collider.xSpeed = -self.collider.xSpeed
-                    else :
-                        self.collider.ySpeed = -self.collider.ySpeed
+                # 없앤 공 수 증가
+                self.breakCount += 1
 
-                    # 없앤 공 수 증가
-                    self.breakCount += 1
-
-                    # brick 없애기
-                    brick.destroy()
+                # brick 없애기
+                brick.destroy()
     
         
     def paddle_hit(self):

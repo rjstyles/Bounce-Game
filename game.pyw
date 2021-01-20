@@ -6,6 +6,7 @@ from ball import Ball
 from bricks import Bricks
 from circle import Circle
 from paddle import Paddle
+import stageManager
 
 root = Tk()
 root.title("Bounce")
@@ -19,10 +20,12 @@ score.pack(side="left")
 root.update()
 playing = False
 breakCount = 0
+currentStage = 0
 
 def start_game(event):
     global playing
     global breakCount
+    global currentStage
     if playing is False:
         playing = True
         score.configure(text="Score: 00")
@@ -34,13 +37,12 @@ def start_game(event):
         random.shuffle(BALL_COLOR)
         paddle = Paddle(canvas, "blue")
         bricks = []
-        for i in range(0, 5):
-            b = []
-            for j in range(0, 19):
-                random.shuffle(BRICK_COLOR)
-                tmp = Bricks(canvas, BRICK_COLOR[0], 25 * i + 15, 25 * j + 15)
-                b.append(tmp)
-            bricks.append(b)
+        
+        stageMgr = stageManager.StageManager()
+        bricksRaw = stageMgr.getStage(currentStage)
+        for b in bricksRaw:
+            bricks.append(Bricks(canvas, BRICK_COLOR[b.brickType % len(BRICK_COLOR)], b.y, b.x))
+        
 
         balls = [Ball(canvas, BALL_COLOR[0], paddle, bricks, score)]
 

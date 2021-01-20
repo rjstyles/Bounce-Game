@@ -3,4 +3,4 @@
 
 bgImage = "bg.png"
 font = "Consolas 14 bold"
-# bgMusic = "audio.mp3"
+bgMusic = "etude10-4.mp3"

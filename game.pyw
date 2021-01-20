@@ -9,6 +9,7 @@ from paddle import Paddle
 import stageManager
 import resourceManager
 from PIL import ImageTk
+import pyglet
 
 root = Tk()
 root.title("Bounce")
@@ -25,6 +26,7 @@ root.update()
 playing = False
 breakCount = 0
 currentStage = 0
+bgMusic = pyglet.media.load(resourceManager.bgMusic)
 
 def start_game(event):
     global playing
@@ -34,6 +36,10 @@ def start_game(event):
         playing = True
         score.configure(text="Score: 00")
         canvas.delete("all")
+        try:
+            bgMusic.play()
+        except:
+            pass
         canvas.create_image(0, 0, image=bgImage, anchor='nw')
         BALL_COLOR = ["red", "yellow", "white"]
         BRICK_COLOR = ["PeachPuff3", "dark slate gray", "rosy brown", "light goldenrod yellow", "turquoise3", "salmon",

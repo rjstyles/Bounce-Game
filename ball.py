@@ -1,8 +1,9 @@
 from circle import Circle
+import item
 import random
 
 class Ball:
-    def __init__(self, canvas, img, paddle, bricks, score):
+    def __init__(self, canvas, img, paddle, bricks, score, items):
         self.bricks = bricks
         self.canvas = canvas
         self.paddle = paddle
@@ -14,11 +15,12 @@ class Ball:
         start = [4, 3.8, 3.6, 3.4, 3.2, 3, 2.8, 2.6]
         random.shuffle(start)
         #print(start)
-        self.collider = Circle(471, 250, 9)
+        self.collider = Circle(471, self.canvas.coords(paddle.id)[0] + 50, 9)
         self.collider.setSpeed(-start[0], start[0])
         self.canvas.move(self.id, self.collider.x, self.collider.y)
         self.canvas_height = canvas.winfo_height()
         self.canvas_width = canvas.winfo_width()
+        self.items = items
 
     def brick_hit(self):
         for brick in self.bricks:
@@ -39,6 +41,10 @@ class Ball:
                 # 없앤 공 수 증가
                 self.breakCount += 1
 
+                # 확률적 아이템 생성
+                if random.randint(0, 1) == 0: # 1/16 확률로 디버그: 100% 확률로
+                    self.items.append(item.Item(0, brick.collider.getMidY(), brick.collider.getMidX(), self.canvas, self.paddle))
+
                 # brick 없애기
                 brick.destroy()
     
@@ -52,6 +58,7 @@ class Ball:
                 #print("paddle hit")
                 return True
             return False
+        return False
 
     def update(self):
         prevY = self.collider.y

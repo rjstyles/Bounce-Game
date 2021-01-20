@@ -8,7 +8,7 @@ from circle import Circle
 from paddle import Paddle
 import stageManager
 import resourceManager
-from PIL import ImageTk
+from PIL import ImageTk, Image
 import pyglet
 
 root = Tk()
@@ -18,20 +18,32 @@ root.resizable(0, 0)
 #root.wm_attributes("-topmost", 1)
 canvas = Canvas(root, width=500, height=500, bd=0, highlightthickness=0, highlightbackground="Red", bg="Black")
 canvas.pack(padx=10, pady=10)
+
+brickImg = Image.open(resourceManager.bubble)
+brickImg = brickImg.resize((32, 32), Image.ANTIALIAS)
+brickImg = ImageTk.PhotoImage(brickImg)
+
+ballImg = Image.open(resourceManager.mainball)
+ballImg = ballImg.resize((18, 18), Image.ANTIALIAS)
+ballImg = ImageTk.PhotoImage(ballImg)
+
 bgImage = ImageTk.PhotoImage(file=resourceManager.bgImage)
 canvas.create_image(0, 0, image=bgImage, anchor='nw')
 score = Label(height=50, width=80, text="Score: 00", font=resourceManager.font)
 score.pack(side="left")
 root.update()
+bgMusic = pyglet.media.load(resourceManager.bgMusic)
+
 playing = False
 breakCount = 0
+totalBrick = 0
 currentStage = 0
-bgMusic = pyglet.media.load(resourceManager.bgMusic)
 
 def start_game(event):
     global playing
     global breakCount
     global currentStage
+    global totalBrick
     if playing is False:
         playing = True
         score.configure(text="Score: 00")
@@ -41,21 +53,16 @@ def start_game(event):
         except:
             pass
         canvas.create_image(0, 0, image=bgImage, anchor='nw')
-        BALL_COLOR = ["red", "yellow", "white"]
-        BRICK_COLOR = ["PeachPuff3", "dark slate gray", "rosy brown", "light goldenrod yellow", "turquoise3", "salmon",
-                       "light steel blue", "dark khaki", "pale violet red", "orchid", "tan", "MistyRose2",
-                       "DodgerBlue4", "wheat2", "RosyBrown2", "bisque3", "DarkSeaGreen1"]
-        random.shuffle(BALL_COLOR)
-        paddle = Paddle(canvas, "blue")
+        paddle = Paddle(canvas, resourceManager.bar)
         bricks = []
         
         stageMgr = stageManager.StageManager()
         bricksRaw = stageMgr.getStage(currentStage)
+        totalBrick = len(bricksRaw)
         for b in bricksRaw:
-            bricks.append(Bricks(canvas, BRICK_COLOR[b.brickType % len(BRICK_COLOR)], b.y, b.x))
+            bricks.append(Bricks(canvas, brickImg, b.y, b.x))
         
-
-        balls = [Ball(canvas, BALL_COLOR[0], paddle, bricks, score)]
+        balls = [Ball(canvas, ballImg, paddle, bricks, score)]
 
         #ball = Ball(canvas, BALL_COLOR[1], paddle, bricks, score)
         #ball.collider.setSpeed(-3.2, -4)
@@ -83,7 +90,7 @@ def start_game(event):
                         b.setBreakCount(0)
                         if b.bottom_hit == True:
                             balls.remove(b)
-                    if breakCount==95:
+                    if breakCount == totalBrick:
                         canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font="Consolas 24 ")
                         root.update_idletasks()
                         root.update()

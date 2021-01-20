@@ -2,7 +2,7 @@ from circle import Circle
 import random
 
 class Ball:
-    def __init__(self, canvas, color, paddle, bricks, score):
+    def __init__(self, canvas, img, paddle, bricks, score):
         self.bricks = bricks
         self.canvas = canvas
         self.paddle = paddle
@@ -10,11 +10,11 @@ class Ball:
         self.breakCount = 0
         self.bottom_hit = False
         self.hit = 0
-        self.id = canvas.create_oval(-7, -7, 7, 7, fill=color, width=1)
+        self.id = canvas.create_image(-9, -9, image=img, anchor='nw')
         start = [4, 3.8, 3.6, 3.4, 3.2, 3, 2.8, 2.6]
         random.shuffle(start)
         #print(start)
-        self.collider = Circle(480, 240, 7)
+        self.collider = Circle(471, 250, 9)
         self.collider.setSpeed(-start[0], start[0])
         self.canvas.move(self.id, self.collider.x, self.collider.y)
         self.canvas_height = canvas.winfo_height()

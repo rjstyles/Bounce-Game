@@ -5,5 +5,10 @@ bgImage = "pixel 배경.jpg"
 mainball="달.png"
 bubble="pixel-soap.png"
 font = "Consolas 14 bold"
-bgMusic = "etude10-4.mp3"
+bgMusic = "bk_music.mp3"
 bar="Orchid"
+itemImg = []
+itemImg.append("item_blue")
+itemImg.append("item_green")
+itemImg.append("item_white")
+itemImg.append("item_red")

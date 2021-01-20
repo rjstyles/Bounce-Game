@@ -54,7 +54,7 @@ def start_game(event):
     global totalBrick
     if playing is False:
         playing = True
-        score.configure(text="Score: 00")
+        score.configure(text="Score: 0")
         canvas.delete("all") # 현재의 canvas 내용을 모두 지우기
         try:
             bgMusic.play()
@@ -110,6 +110,7 @@ def start_game(event):
                         if i.isDead():
                             items.remove(i)
                     if breakCount == totalBrick:
+                        score.configure(text="Score: " + str(breakCount))
                         canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font="Consolas 24 ")
                         root.update_idletasks()
                         root.update()

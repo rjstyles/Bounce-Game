@@ -7,8 +7,15 @@ bubble="pixel-soap.png"
 font = "Consolas 14 bold"
 bgMusic = "bk_music.mp3"
 bar="Orchid"
+
 itemImg = []
-itemImg.append("item_blue")
-itemImg.append("item_green")
-itemImg.append("item_white")
-itemImg.append("item_red")
+itemImg.append("item_blue.png")
+itemImg.append("item_green.png")
+itemImg.append("item_white.png")
+itemImg.append("item_red.png")
+
+win_sound="clear_sound.mp3"
+lose_sound="over_sound.mp3"
+bartouch_sound="bar_sound.mp3"
+break_sound="drop_sound.mp3"
+walltouch_sound="wall_sound.mp3"

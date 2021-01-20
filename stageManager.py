@@ -14,8 +14,8 @@ class StageManager:
         # 1스테이지
         currentStage = []
         for i in range(0, 5):
-            for j in range(0, 19):
-                currentStage.append(BrickRaw(25 * i + 15, 25 * j + 15, random.randint(0, 17))) # y위치, x위치, 타입(현재는 색상을 의미)
+            for j in range(0, 16):
+                currentStage.append(BrickRaw(32 * i + 15, 32 * j + 15, random.randint(0, 17))) # y위치, x위치, 타입(현재는 색상을 의미)
         self.stages.append(currentStage) # 스테이지 목록에 추가
 
         # 2스테이지(예시)

@@ -31,15 +31,17 @@ def rank(score):
 #랭크를 보여주는 함수.
 def showRank():
     root = Tk()
+    scrollbar = Scrollbar(root)
+    scrollbar.pack(side=RIGHT, fill=Y)
     root.title("순위표")
-    root.geometry("300x400")
+    root.geometry("300x230")
     sql = "SELECT * FROM rank order by score DESC"
     res = c.execute(sql)
     treelist=[]
     for r in res:
         treelist.append(r)
 
-    treeview = ttk.Treeview(root, columns=["이름", "점수"], displaycolumns=["이름", "점수"])
+    treeview = ttk.Treeview(root, columns=["이름", "점수"], displaycolumns=["이름", "점수"], yscrollcommand = scrollbar.set)
     treeview.pack()
 
     treeview.column("#0", width=50, anchor="center")

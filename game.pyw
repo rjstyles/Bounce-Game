@@ -36,24 +36,31 @@ itemImg = itemImg.resize((18, 18), Image.ANTIALIAS)
 itemImg = ImageTk.PhotoImage(itemImg)
 
 bgImage = ImageTk.PhotoImage(file=resourceManager.bgImage)
-canvas.create_image(0, 0, image=bgImage, anchor='nw')
 score = Label(height=50, width=80, text="Score: 0", font=resourceManager.font)
 score.pack(side="left")
 root.update()
 bgMusic = pyglet.media.load(resourceManager.bgMusic)
 
-playing = False
+playing = 0
 breakCount = 0
 totalBrick = 0
 currentStage = 0
+
+def gotoMainScreen(event):
+    global playing
+
+    playing = 0
+    canvas.delete("all") # 현재의 canvas 내용을 모두 지우기
+    canvas.create_image(0, 0, image=bgImage, anchor='nw')
+    canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font=resourceManager.font)
 
 def start_game(event):
     global playing
     global breakCount
     global currentStage
     global totalBrick
-    if playing is False:
-        playing = True
+    if playing is 0:
+        playing = 1
         score.configure(text="Score: 0")
         canvas.delete("all") # 현재의 canvas 내용을 모두 지우기
         try:
@@ -84,7 +91,7 @@ def start_game(event):
         root.update()
 
         time.sleep(1)
-        while 1:
+        while playing == 1:
             if paddle.pausec !=1:
                 try:
                     canvas.delete(m)
@@ -111,10 +118,10 @@ def start_game(event):
                             items.remove(i)
                     if breakCount == totalBrick:
                         score.configure(text="Score: " + str(breakCount))
-                        canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font="Consolas 24 ")
+                        canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font=resourceManager.font)
                         root.update_idletasks()
                         root.update()
-                        playing = False
+                        playing = 2
                         break
                     score.configure(text="Score: " + str(breakCount))
                     paddle.draw()
@@ -122,21 +129,22 @@ def start_game(event):
                     root.update()
                     time.sleep(0.01)
                 else:
-                    canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font="Consolas 24 ")
+                    canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font=resourceManager.font)
                     root.update_idletasks()
                     root.update()
-                    playing = False
+                    playing = 2
                     break
             else:
                 try:
                     if m==None:pass
                 except:
-                    m=canvas.create_text(250, 250, text="PAUSE!!", fill="green", font="Consolas 24 ")
+                    m=canvas.create_text(250, 250, text="PAUSE!!", fill="green", font=resourceManager.font)
                 root.update_idletasks()
                 root.update()
-        rankdb.rank(breakCount)
+        if playing == 2:
+            rankdb.rank(breakCount)
 
+gotoMainScreen(0)
 root.bind_all("<Return>", start_game)
-canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font="Consolas 18")
 j=canvas.find_all()
 root.mainloop()

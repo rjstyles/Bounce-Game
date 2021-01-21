@@ -1,6 +1,8 @@
 from circle import Circle
 import item
 import random
+import resourceManager
+import pyglet
 
 class Ball:
     def __init__(self, canvas, img, paddle, bricks, score, items, itemImg):
@@ -46,6 +48,9 @@ class Ball:
                 if random.randint(0, 1) == 0: # 1/16 확률로 디버그: 100% 확률로
                     self.items.append(item.Item(0, brick.collider.getMidY(), brick.collider.getMidX(), self.canvas, self.itemImg, self.paddle))
 
+                breakSound = pyglet.media.load(resourceManager.break_sound)
+                breakSound.play()
+
                 # brick 없애기
                 brick.destroy()
     
@@ -56,7 +61,9 @@ class Ball:
         paddle_pos = self.canvas.coords(self.paddle.id)
         if self.collider.x >= paddle_pos[0] and self.collider.x <= paddle_pos[2]:
             if self.collider.y + self.collider.radius >= paddle_pos[1] and self.collider.y + self.collider.radius <= paddle_pos[3]:
-                #print("paddle hit")
+                barSound = pyglet.media.load(resourceManager.bartouch_sound)
+                barSound.seek(0.25)
+                barSound.play()
                 return True
             return False
         return False
@@ -77,8 +84,12 @@ class Ball:
             self.canvas.delete(self.id)
         if self.collider.x - self.collider.radius <= 0:
             self.collider.xSpeed = abs(self.collider.xSpeed)
+            wallSound = pyglet.media.load(resourceManager.walltouch_sound)
+            wallSound.play()
         if self.collider.x + self.collider.radius >= self.canvas_width:
             self.collider.xSpeed = -abs(self.collider.xSpeed)
+            wallSound = pyglet.media.load(resourceManager.walltouch_sound)
+            wallSound.play()
         if self.paddle_hit():
             self.collider.ySpeed = -abs(self.collider.ySpeed)
 

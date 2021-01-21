@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.messagebox as msgbox
 import time
 import random
 import rankdb
@@ -138,4 +139,41 @@ def start_game(event):
 root.bind_all("<Return>", start_game)
 canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font="Consolas 18")
 j=canvas.find_all()
+
+menu = Menu(root)
+
+#게임 재시작 미완성
+def start():
+    response = msgbox.askyesno("새 게임", "플레이 중인 게임은 저장되지 않습니다.\n새로 시작하시겠습니까?")
+    if response == 1:
+        pass
+#랭킹 메뉴
+def ranking():
+    rankdb.showRank()
+#종료 메뉴
+def close():
+    root.quit()
+    root.destroy()
+#키 설정 메뉴
+def setting():
+    root = Tk()
+    root.title("키 설정")
+    root.geometry("250x80")
+    root.resizable(False, False)
+
+    label = Label(root, text = "왼쪽으로 이동: 왼방향키\n오른쪽으로 이동: 오른방향키\n정지: 스페이스바")
+    label.pack()
+
+#재시작 메뉴 생성
+menu.add_cascade(label = "New Game", command = start)
+#랭킹 메뉴 생성
+menu.add_cascade(label = "Ranking", command = ranking)
+#키 설정 메뉴 생성
+menu.add_cascade(label = "Key Setting", command = setting)
+#종료 메뉴 생성
+menu.add_cascade(label = "Exit", command = close)
+
+#메뉴 등록
+root.config(menu = menu)
+
 root.mainloop()

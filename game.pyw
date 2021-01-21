@@ -46,7 +46,7 @@ breakCount = 0
 totalBrick = 0
 currentStage = 0
 
-def gotoMainScreen(event):
+def gotoMainScreen():
     global playing
 
     playing = 0
@@ -144,7 +144,6 @@ def start_game(event):
         if playing == 2:
             rankdb.rank(breakCount)
 
-gotoMainScreen(0)
+gotoMainScreen()
 root.bind_all("<Return>", start_game)
-j=canvas.find_all()
 root.mainloop()

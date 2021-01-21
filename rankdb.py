@@ -11,7 +11,6 @@ def insert(name, score):
     sql = "INSERT INTO rank (name, score) VALUES(?, ?)"
     c.execute(sql, (name, score))
     conn.commit()
-    showRank()
 
 #데이터추가를 위한 이름 입력창을 띄우는 함수.
 def rank(score):
@@ -24,7 +23,7 @@ def rank(score):
     label = Label(root, text="이름을 입력하세요.")
     nameInput = Entry(root, width = 30)
     nameInput.pack()
-    btn = Button(root, text="입력", command=lambda: insert(nameInput.get(), score))
+    btn = Button(root, text="입력", command=lambda: (insert(nameInput.get(), score), root.destroy(), showRank()))
     btn.pack()
     root.mainloop()
 

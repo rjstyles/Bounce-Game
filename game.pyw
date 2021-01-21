@@ -51,6 +51,7 @@ def gotoMainScreen():
     global playing
 
     playing = 0
+    currentStage = 0
     canvas.delete("all") # 현재의 canvas 내용을 모두 지우기
     canvas.create_image(0, 0, image=bgImage, anchor='nw')
     canvas.create_text(250, 250, text="Press Enter to start Game!!", fill="red", font=resourceManager.font)
@@ -60,7 +61,9 @@ def start_game(event):
     global breakCount
     global currentStage
     global totalBrick
-    if playing is 0:
+
+    breakCount = 0
+    if playing != 1:
         playing = 1
         score.configure(text="Score: 0")
         canvas.delete("all") # 현재의 canvas 내용을 모두 지우기
@@ -154,7 +157,7 @@ menu = Menu(root)
 def start():
     response = msgbox.askyesno("새 게임", "플레이 중인 게임은 저장되지 않습니다.\n새로 시작하시겠습니까?")
     if response == 1:
-        gotoMainScreen
+        gotoMainScreen()
 #랭킹 메뉴
 def ranking():
     rankdb.showRank()
@@ -165,7 +168,7 @@ def close():
 #키 설정 메뉴
 def setting():
     root = Tk()
-    root.title("키 설정")
+    root.title("조작법")
     root.geometry("250x80")
     root.resizable(False, False)
 
@@ -177,7 +180,7 @@ menu.add_cascade(label = "New Game", command = start)
 #랭킹 메뉴 생성
 menu.add_cascade(label = "Ranking", command = ranking)
 #키 설정 메뉴 생성
-menu.add_cascade(label = "Key Setting", command = setting)
+menu.add_cascade(label = "Controls", command = setting)
 #종료 메뉴 생성
 menu.add_cascade(label = "Exit", command = close)
 

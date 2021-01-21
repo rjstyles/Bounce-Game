@@ -34,8 +34,11 @@ def showRank():
     scrollbar.pack(side=RIGHT, fill=Y)
     root.title("순위표")
     root.geometry("300x230")
-    sql = "SELECT * FROM rank order by score DESC"
-    res = c.execute(sql)
+    try:
+        sql = "SELECT * FROM rank order by score DESC"
+        res = c.execute(sql)
+    except:
+        res = []
     treelist=[]
     for r in res:
         treelist.append(r)
@@ -57,4 +60,4 @@ def showRank():
 
     treeview.pack()
 
-    root.mainloop()
+    #root.mainloop()

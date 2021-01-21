@@ -45,7 +45,7 @@ class Ball:
                 self.breakCount += 1
 
                 # 확률적 아이템 생성
-                if random.randint(0, 1) == 0: # 1/16 확률로 디버그: 100% 확률로
+                if random.randint(0, 2) == 0: # 1/3 확률로
                     self.items.append(item.Item(0, brick.collider.getMidY(), brick.collider.getMidX(), self.canvas, self.itemImg, self.paddle))
 
                 breakSound = pyglet.media.load(resourceManager.break_sound)

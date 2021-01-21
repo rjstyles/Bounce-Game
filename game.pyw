@@ -123,6 +123,8 @@ def start_game(event):
                     if breakCount == totalBrick:
                         score.configure(text="Score: " + str(breakCount))
                         canvas.create_text(250, 250, text="YOU WON !!", fill="yellow", font=resourceManager.font)
+                        winSound = pyglet.media.load(resourceManager.win_sound)
+                        winSound.play()
                         root.update_idletasks()
                         root.update()
                         playing = 2
@@ -134,6 +136,8 @@ def start_game(event):
                     time.sleep(0.01)
                 else:
                     canvas.create_text(250, 250, text="GAME OVER!!", fill="red", font=resourceManager.font)
+                    loseSound = pyglet.media.load(resourceManager.lose_sound)
+                    loseSound.play()
                     root.update_idletasks()
                     root.update()
                     playing = 2
